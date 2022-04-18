@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import TextField from './TextField'
+import NameList from './NameList'
 
-function App() {
+interface Persons {
+  id: number;
+  name: string;
+}
+
+const App: React.FC = () => {
+  const [name, setName] = useState<string>("")
+  const [persons, setPersons] = useState<Persons[]>([])
+
+  const handleAdd = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if(name) {
+      setPersons([...persons, {id: Date.now(), name: name}])
+      setName("")
+    }
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <span className="heading">Simple Address Keeper</span>
+      <TextField name={name} setName={setName} handleAdd={handleAdd} />
+      <NameList persons={persons} setPersons={setPersons} />
     </div>
-  );
+  )
 }
 
 export default App;
